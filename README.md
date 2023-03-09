@@ -1,7 +1,7 @@
 # STM32H743ZI2_AI_Sine_Test
 Latest code to predict Sin(x) radians implemented in STM32H743ZI2 embedded microcontroller.
 
-In the sine_model.h file please look carefully the commented out lines and replacement of new codes. I have replaced the AI DEPRECATED LINES WITH NEW WORKING LINES.
+In the sine_model.h file please look carefully the commented out lines and replacement of new codes. I have replaced the AI DEPRECATED LINES WITH NEW code LINES. Otherwise it was showing errors. Now it is working properly.
 
 //AI_DEPRECATED
 //#define AI_SINE_MODEL_IN \
