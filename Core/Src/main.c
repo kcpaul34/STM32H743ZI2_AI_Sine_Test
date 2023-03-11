@@ -190,7 +190,10 @@ int main(void)
 		// Get current timestamp
 		timestamp1= htim1.Instance->CNT;
 		timestamp = htim16.Instance->CNT;
-
+		
+		// For timing we will turn on green LED and then turn off after the inference
+		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, SET);  // Turn on Green LED before inference
+		
 		// Perform inference
 		batch = ai_sine_model_run(sine_model, &ai_input[0], &ai_output[0]);
 		if (batch != 1) {
@@ -200,15 +203,17 @@ int main(void)
 
 		// Read output (predicted y) of neural network
 		y_val = ((float*) out_data)[0];
-
+		
+		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, RESET);  // Turn off Green LED after inference
+		
 		// Print output of neural network along with inference time (microseconds)
 		buf_len = sprintf(buf, "Prediction: %f | Duration1: %lu |Duration16: %lu\r\n", y_val,
-				htim1.Instance->CNT - timestamp, htim16.Instance->CNT-timestamp);
+				htim1.Instance->CNT - timestamp1, htim16.Instance->CNT-timestamp);
 		HAL_UART_Transmit(&huart3, (uint8_t*) buf, buf_len, 100);
 
 		// Wait before doing it again
 		HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_0);
-		HAL_Delay(500);
+		HAL_Delay(500);  // To read timing using oscilloscope set this delay as low as 0.2 ms. Inference time is only 10us using this board.
 
     /* USER CODE END WHILE */
 
